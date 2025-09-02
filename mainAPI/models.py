@@ -3,7 +3,6 @@ import uuid
 
 
 class Aeropuertos(models.Model):
-     anumero = models.CharField(max_length=2)
      aaerodescripcion = models.CharField(max_length=20)
      alugar = models.CharField(max_length=50)
      asiglas = models.CharField(max_length=3)

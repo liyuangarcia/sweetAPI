@@ -10,7 +10,7 @@ class AeropuertosSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Aeropuertos
-        fields = ('id','anumero','aaerodescripcion','alugar','asiglas','slug')
+        fields = ('id','aaerodescripcion','alugar','asiglas','slug')
         extra_kwargs = {'url': {'lookup_field': 'slug'}}
 
 class UserSerializer(serializers.ModelSerializer):

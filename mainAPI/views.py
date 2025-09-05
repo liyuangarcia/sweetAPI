@@ -4,10 +4,11 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.contrib.auth.models import User
-from .serializers import LoginSerializer, RegisterSerializer, UserSerializer, AeropuertosSerializer
+from .serializers import LoginSerializer, RegisterSerializer, UserSerializer, \
+    AeropuertosSerializer, GuiasPescasSerializer, DestPescaSerializer, TipoPescaSerializer, RegionesPescaSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from .models import Aeropuertos
+from .models import Aeropuertos,GuiasPescas, DestPesca,TipoPesca, RegionesPesca
 
 #@permission_classes([IsAuthenticated])
 class AeropuertosViewSet(viewsets.ModelViewSet):
@@ -16,6 +17,35 @@ class AeropuertosViewSet(viewsets.ModelViewSet):
     filter_backends = [filters.SearchFilter]
     search_fields = ['aaerodescripcion', 'alugar', 'asiglas']
     lookup_field = 'slug'
+#@permission_classes([IsAuthenticated])
+class GuiasPescasViewSet(viewsets.ModelViewSet):
+    queryset = GuiasPescas.objects.all().order_by('GNOMBREDELGUIA')
+    serializer_class = GuiasPescasSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['GNOMBREDELGUIA']
+    lookup_field = 'slug'
+#@permission_classes([IsAuthenticated])
+class DestPescaViewSet(viewsets.ModelViewSet):
+    queryset = DestPesca.objects.all().order_by('DESTINO')
+    serializer_class = DestPescaSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['DESTINO','LANCHAS']
+    lookup_field = 'slug'
+#@permission_classes([IsAuthenticated])
+class TipoPescaViewSet(viewsets.ModelViewSet):
+    queryset = TipoPesca.objects.all().order_by('MPESCA')
+    serializer_class = TipoPescaSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['MPESCA']
+    lookup_field = 'slug'
+
+class RegionesPescaViewSet(viewsets.ModelViewSet):
+    queryset = RegionesPesca.objects.all().order_by('REGIONES')
+    serializer_class = RegionesPescaSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['REGIONES']
+    lookup_field = 'slug'
+
 
 
 @api_view(['POST'])

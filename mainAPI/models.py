@@ -1,7 +1,7 @@
 from django.db import models
 import uuid
 
-
+#Aeropuertos
 class Aeropuertos(models.Model):
      aaerodescripcion = models.CharField(max_length=20)
      alugar = models.CharField(max_length=50)
@@ -16,10 +16,8 @@ class Aeropuertos(models.Model):
 
      def __str__(self):
          return self.aaerodescripcion
-
 #Guias
 class GuiasPescas(models.Model):
-     GNGUIA = models.CharField(max_length=2)
      GNOMBREDELGUIA = models.CharField(max_length=20)
 
      slug = models.SlugField(unique=True)
@@ -32,13 +30,11 @@ class GuiasPescas(models.Model):
 
      def __str__(self):
          return self.GNOMBREDELGUIA
-
 #Asignacion de lanchas a los polos de pescas
 class DestPesca(models.Model):
-     NDESTINO = models.CharField(max_length=2)
      DESTINO = models.CharField(max_length=20)
-     REGION = models.CharField(max_length=2)
-     LANCHAS = models.IntegerField()
+     REGION = models.CharField(max_length=2, blank=True)
+     LANCHAS = models.IntegerField(blank=True, null=True, default=None)
 
      slug = models.SlugField(unique=True)
 
@@ -50,11 +46,9 @@ class DestPesca(models.Model):
 
      def __str__(self):
          return self.DESTINO
-
 #POSIBLES ACTIVIDADES EN EL POLO
 class TipoPesca(models.Model):
-     MTIPODEPESCA = models.CharField(max_length=1)
-     MPESCA = models.CharField(max_length=1)
+     MPESCA = models.CharField(max_length=10)
      slug = models.SlugField(unique=True)
 
      def save(self, *args, **kwargs):
@@ -65,6 +59,19 @@ class TipoPesca(models.Model):
 
      def __str__(self):
          return self.MPESCA
+#Regiones de pesca
+class RegionesPesca(models.Model):
+     REGIONES = models.CharField(max_length=20)
+     slug = models.SlugField(unique=True)
+
+     def save(self, *args, **kwargs):
+         self.slug = '%s' % (
+             uuid.uuid1()
+         )
+         super(RegionesPesca, self).save(*args, **kwargs)
+
+     def __str__(self):
+         return self.REGIONES
 
 #Lanchas por Region
 class LanchasRegion(models.Model):
@@ -80,6 +87,8 @@ class LanchasRegion(models.Model):
 
      def __str__(self):
          return self.REGION
+
+
 
 # class OrigReservas(models.Model):
 #     ONO = models.CharField(max_length=2)

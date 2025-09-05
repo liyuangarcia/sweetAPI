@@ -3,7 +3,7 @@ from rest_framework import serializers
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import Aeropuertos
+from .models import Aeropuertos, GuiasPescas, DestPesca, TipoPesca, RegionesPesca
 
 class AeropuertosSerializer(serializers.ModelSerializer):
     slug = serializers.SlugField(read_only=True)
@@ -12,12 +12,48 @@ class AeropuertosSerializer(serializers.ModelSerializer):
         model = Aeropuertos
         fields = ('id','aaerodescripcion','alugar','asiglas','slug')
         extra_kwargs = {'url': {'lookup_field': 'slug'}}
+class GuiasPescasSerializer(serializers.ModelSerializer):
+    slug = serializers.SlugField(read_only=True)
+
+    class Meta:
+        model = GuiasPescas
+        fields = ('id','GNOMBREDELGUIA','slug')
+        extra_kwargs = {'url': {'lookup_field': 'slug'}}
+class DestPescaSerializer(serializers.ModelSerializer):
+    slug = serializers.SlugField(read_only=True)
+    LANCHAS = serializers.CharField(
+            required=False, allow_null=True, allow_blank=True)
+    def validate_LANCHAS(self, value):
+        if not value:
+            return 0
+        try:
+            return int(value)
+        except ValueError:
+            raise serializers.ValidationError('You must supply an integer')
+
+    class Meta:
+        model = DestPesca
+        fields = ('id','DESTINO','REGION','LANCHAS','slug')
+        extra_kwargs = {'url': {'lookup_field': 'slug'}, 'LANCHAS': {'required': False, 'allow_null': True}}
+class TipoPescaSerializer(serializers.ModelSerializer):
+    slug = serializers.SlugField(read_only=True)
+
+    class Meta:
+        model = TipoPesca
+        fields = ('id','MPESCA','slug')
+        extra_kwargs = {'url': {'lookup_field': 'slug'}}
+class RegionesPescaSerializer(serializers.ModelSerializer):
+    slug = serializers.SlugField(read_only=True)
+
+    class Meta:
+        model = RegionesPesca
+        fields = ('id','REGIONES','slug')
+        extra_kwargs = {'url': {'lookup_field': 'slug'}}
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'username', 'email', 'first_name', 'last_name')
-
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField()
     password = serializers.CharField(write_only=True)
@@ -42,7 +78,6 @@ class LoginSerializer(serializers.Serializer):
             data['access'] = str(refresh.access_token)
             
         return data
-
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, min_length=6)
     password2 = serializers.CharField(write_only=True, min_length=6)

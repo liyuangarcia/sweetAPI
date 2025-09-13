@@ -5,10 +5,15 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.contrib.auth.models import User
 from .serializers import LoginSerializer, RegisterSerializer, UserSerializer, \
-    AeropuertosSerializer, GuiasPescasSerializer, DestPescaSerializer, TipoPescaSerializer, RegionesPescaSerializer
+    AeropuertosSerializer, GuiasPescasSerializer, DestPescaSerializer, TipoPescaSerializer,\
+    RegionesPescaSerializer, DestinosSerializer, MarinasSerializer, LanchasRegionSerializer,\
+    LugaresHotelesSerializer, TiposHabitacionesSerializer, RegimenSerializer, MunicipiosSerializer, \
+    RentRoomSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from .models import Aeropuertos,GuiasPescas, DestPesca,TipoPesca, RegionesPesca
+from .models import Aeropuertos,GuiasPescas, DestPesca,TipoPesca, RegionesPesca, \
+    Destinos, Marinas, LanchasRegion, LugaresHoteles, TiposHabitaciones, Regimen, \
+    Municipios, RentRoom
 
 #@permission_classes([IsAuthenticated])
 class AeropuertosViewSet(viewsets.ModelViewSet):
@@ -29,7 +34,7 @@ class DestPescaViewSet(viewsets.ModelViewSet):
     queryset = DestPesca.objects.all().order_by('DESTINO')
     serializer_class = DestPescaSerializer
     filter_backends = [filters.SearchFilter]
-    search_fields = ['DESTINO','LANCHAS']
+    search_fields = ['DESTINO','LANCHAS', 'REGIONES__REGIONES']
     lookup_field = 'slug'
 #@permission_classes([IsAuthenticated])
 class TipoPescaViewSet(viewsets.ModelViewSet):
@@ -38,15 +43,61 @@ class TipoPescaViewSet(viewsets.ModelViewSet):
     filter_backends = [filters.SearchFilter]
     search_fields = ['MPESCA']
     lookup_field = 'slug'
-
+#@permission_classes([IsAuthenticated])
 class RegionesPescaViewSet(viewsets.ModelViewSet):
     queryset = RegionesPesca.objects.all().order_by('REGIONES')
     serializer_class = RegionesPescaSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['REGIONES']
     lookup_field = 'slug'
-
-
+class DestinosViewSet(viewsets.ModelViewSet):
+    queryset = Destinos.objects.all().order_by('DESTINO')
+    serializer_class = DestinosSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['DESTINO']
+    lookup_field = 'slug'
+class MarinasViewSet(viewsets.ModelViewSet):
+    queryset = Marinas.objects.all().order_by('Nmarina')
+    serializer_class = MarinasSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['Lmarina','Nmarina','NoficialMarina']
+    lookup_field = 'slug'
+class LanchasRegionViewSet(viewsets.ModelViewSet):
+    queryset = LanchasRegion.objects.all().order_by('REGIONES__REGIONES')
+    serializer_class = LanchasRegionSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['REGIONES__REGIONES']
+    lookup_field = 'slug'
+class LugaresHotelesViewSet(viewsets.ModelViewSet):
+    queryset = LugaresHoteles.objects.all().order_by('LugarHotel')
+    serializer_class = LugaresHotelesSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['Polo__DESTINO','LugarHotel','Direccion','Telefono']
+    lookup_field = 'slug'
+class TiposHabitacionesViewSet(viewsets.ModelViewSet):
+    queryset = TiposHabitaciones.objects.all().order_by('THABITACION')
+    serializer_class = TiposHabitacionesSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['THABITACION','TCANTC']
+    lookup_field = 'slug'
+class RegimenViewSet(viewsets.ModelViewSet):
+    queryset = Regimen.objects.all().order_by('TPLANALIM')
+    serializer_class = RegimenSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['TPLANALIM']
+    lookup_field = 'slug'
+class MunicipiosViewSet(viewsets.ModelViewSet):
+    queryset = Municipios.objects.all().order_by('municipio')
+    serializer_class = MunicipiosSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['municipio','polo__DESTINO']
+    lookup_field = 'slug'
+class RentRoomViewSet(viewsets.ModelViewSet):
+    queryset = RentRoom.objects.all().order_by('Direccioncasa')
+    serializer_class = RentRoomSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['polocasa__DESTINO','Direccioncasa','telefonocasa','contactocasa','descripcion','municipcasa__municipio']
+    lookup_field = 'slug'
 
 @api_view(['POST'])
 @permission_classes([AllowAny])

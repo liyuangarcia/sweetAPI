@@ -3,7 +3,9 @@ from rest_framework import serializers
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import Aeropuertos, GuiasPescas, DestPesca, TipoPesca, RegionesPesca
+from .models import Aeropuertos, GuiasPescas, DestPesca, TipoPesca, RegionesPesca, \
+    Destinos, Marinas, LanchasRegion, LugaresHoteles, TiposHabitaciones, Regimen, \
+    Municipios, RentRoom
 
 class AeropuertosSerializer(serializers.ModelSerializer):
     slug = serializers.SlugField(read_only=True)
@@ -21,6 +23,7 @@ class GuiasPescasSerializer(serializers.ModelSerializer):
         extra_kwargs = {'url': {'lookup_field': 'slug'}}
 class DestPescaSerializer(serializers.ModelSerializer):
     slug = serializers.SlugField(read_only=True)
+    regionestext = serializers.ReadOnlyField(source='REGIONES.REGIONES')
     LANCHAS = serializers.CharField(
             required=False, allow_null=True, allow_blank=True)
     def validate_LANCHAS(self, value):
@@ -33,7 +36,7 @@ class DestPescaSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = DestPesca
-        fields = ('id','DESTINO','REGION','LANCHAS','slug')
+        fields = ('id','DESTINO','REGIONES','LANCHAS','regionestext','slug')
         extra_kwargs = {'url': {'lookup_field': 'slug'}, 'LANCHAS': {'required': False, 'allow_null': True}}
 class TipoPescaSerializer(serializers.ModelSerializer):
     slug = serializers.SlugField(read_only=True)
@@ -49,6 +52,67 @@ class RegionesPescaSerializer(serializers.ModelSerializer):
         model = RegionesPesca
         fields = ('id','REGIONES','slug')
         extra_kwargs = {'url': {'lookup_field': 'slug'}}
+class DestinosSerializer(serializers.ModelSerializer):
+    slug = serializers.SlugField(read_only=True)
+
+    class Meta:
+        model = Destinos
+        fields = ('id','DESTINO','slug')
+        extra_kwargs = {'url': {'lookup_field': 'slug'}}
+class MarinasSerializer(serializers.ModelSerializer):
+    slug = serializers.SlugField(read_only=True)
+
+    class Meta:
+        model = Marinas
+        fields = ('id','Lmarina','Nmarina','NoficialMarina','slug')
+        extra_kwargs = {'url': {'lookup_field': 'slug'}}
+class LanchasRegionSerializer(serializers.ModelSerializer):
+    slug = serializers.SlugField(read_only=True)
+    regionestext = serializers.ReadOnlyField(source='REGIONES.REGIONES')
+
+    class Meta:
+        model = LanchasRegion
+        fields = ('id','REGIONES','SumaDeLANCHAS','slug','regionestext')
+        extra_kwargs = {'url': {'lookup_field': 'slug'}}
+class LugaresHotelesSerializer(serializers.ModelSerializer):
+    slug = serializers.SlugField(read_only=True)
+    polotext = serializers.ReadOnlyField(source='Polo.DESTINO')
+
+    class Meta:
+        model = LugaresHoteles
+        fields = ('id','Polo','LugarHotel','Direccion','Telefono','slug','polotext')
+        extra_kwargs = {'url': {'lookup_field': 'slug'}}
+class TiposHabitacionesSerializer(serializers.ModelSerializer):
+    slug = serializers.SlugField(read_only=True)
+
+    class Meta:
+        model = TiposHabitaciones
+        fields = ('id','THABITACION','TCANTC','slug')
+        extra_kwargs = {'url': {'lookup_field': 'slug'}, 'TCANTC': {'required': False, 'allow_null': True}}
+class RegimenSerializer(serializers.ModelSerializer):
+    slug = serializers.SlugField(read_only=True)
+
+    class Meta:
+        model = Regimen
+        fields = ('id','TPLANALIM','slug')
+        extra_kwargs = {'url': {'lookup_field': 'slug'}}
+class MunicipiosSerializer(serializers.ModelSerializer):
+    slug = serializers.SlugField(read_only=True)
+    polotext = serializers.ReadOnlyField(source='polo.DESTINO')
+
+    class Meta:
+        model = Municipios
+        fields = ('id','municipio','polo','polotext','slug')
+        extra_kwargs = {'url': {'lookup_field': 'slug'}}
+class RentRoomSerializer(serializers.ModelSerializer):
+    slug = serializers.SlugField(read_only=True)
+    polotext = serializers.ReadOnlyField(source='polocasa.DESTINO')
+    municipiotext = serializers.ReadOnlyField(source='municipcasa.municipio')
+    class Meta:
+        model = RentRoom
+        fields = ('id','polocasa','polotext','municipiotext','Direccioncasa','telefonocasa','contactocasa','descripcion','municipcasa','slug')
+        extra_kwargs = {'url': {'lookup_field': 'slug'}, 'telefonocasa': {'required': False, 'allow_null': True}, 'contactocasa': {'required': False, 'allow_null': True}, 'descripcion': {'required': False, 'allow_null': True}}
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:

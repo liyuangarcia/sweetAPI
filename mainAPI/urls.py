@@ -1,7 +1,9 @@
 # users/urls.py
 from django.urls import path, include
 from . import views
-from .views import AeropuertosViewSet,GuiasPescasViewSet,DestPescaViewSet, TipoPescaViewSet, RegionesPescaViewSet
+from .views import AeropuertosViewSet,GuiasPescasViewSet,DestPescaViewSet, TipoPescaViewSet, \
+    RegionesPescaViewSet, DestinosViewSet, MarinasViewSet, LanchasRegionViewSet,LugaresHotelesViewSet, \
+    TiposHabitacionesViewSet, RegimenViewSet, MunicipiosViewSet,RentRoomViewSet
 from rest_framework_simplejwt.views import TokenRefreshView
 from rest_framework import routers
 
@@ -11,6 +13,14 @@ router.register('guiaspesca', GuiasPescasViewSet)
 router.register('destpesca', DestPescaViewSet)
 router.register('tipopesca', TipoPescaViewSet)
 router.register('regionespesca', RegionesPescaViewSet)
+router.register('destinos', DestinosViewSet)
+router.register('marinas', MarinasViewSet)
+router.register('lanchasregion', LanchasRegionViewSet)
+router.register('lugareshoteles', LugaresHotelesViewSet)
+router.register('tiposhabitaciones', TiposHabitacionesViewSet)
+router.register('regimenes', RegimenViewSet)
+router.register('municipios', MunicipiosViewSet)
+router.register('rentroom', RentRoomViewSet)
 
 urlpatterns = [
     path('login/', views.login_view, name='login'),

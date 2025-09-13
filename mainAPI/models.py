@@ -30,22 +30,6 @@ class GuiasPescas(models.Model):
 
      def __str__(self):
          return self.GNOMBREDELGUIA
-#Asignacion de lanchas a los polos de pescas
-class DestPesca(models.Model):
-     DESTINO = models.CharField(max_length=20)
-     REGION = models.CharField(max_length=2, blank=True)
-     LANCHAS = models.IntegerField(blank=True, null=True, default=None)
-
-     slug = models.SlugField(unique=True)
-
-     def save(self, *args, **kwargs):
-         self.slug = '%s' % (
-             uuid.uuid1()
-         )
-         super(DestPesca, self).save(*args, **kwargs)
-
-     def __str__(self):
-         return self.DESTINO
 #POSIBLES ACTIVIDADES EN EL POLO
 class TipoPesca(models.Model):
      MPESCA = models.CharField(max_length=10)
@@ -72,10 +56,63 @@ class RegionesPesca(models.Model):
 
      def __str__(self):
          return self.REGIONES
+#Asignacion de lanchas a los polos de pescas
+class DestPesca(models.Model):
+     DESTINO = models.CharField(max_length=20)
+     REGIONES = models.ForeignKey(
+        RegionesPesca,
+        null=True,                  # Permite valores NULL en la base de datos
+        blank=True,
+        on_delete=models.PROTECT,  # Previene eliminar categor�as usadas
+     )
+     LANCHAS = models.IntegerField(blank=True, null=True, default=None)
 
+     slug = models.SlugField(unique=True)
+
+     def save(self, *args, **kwargs):
+         self.slug = '%s' % (
+             uuid.uuid1()
+         )
+         super(DestPesca, self).save(*args, **kwargs)
+
+     def __str__(self):
+         return self.DESTINO
+#Destinos o polos turisticos
+class Destinos(models.Model):
+     DESTINO = models.CharField(max_length=20)
+     slug = models.SlugField(unique=True)
+
+     def save(self, *args, **kwargs):
+         self.slug = '%s' % (
+             uuid.uuid1()
+         )
+         super(Destinos, self).save(*args, **kwargs)
+
+     def __str__(self):
+         return self.DESTINO
+#Marinas
+class Marinas(models.Model):
+     Lmarina = models.CharField(max_length=20)
+     Nmarina = models.CharField(max_length=50)
+     NoficialMarina = models.CharField(max_length=50)
+     slug = models.SlugField(unique=True)
+
+     def save(self, *args, **kwargs):
+         self.slug = '%s' % (
+             uuid.uuid1()
+         )
+         super(Marinas, self).save(*args, **kwargs)
+
+     def __str__(self):
+         return self.Nmarina
 #Lanchas por Region
 class LanchasRegion(models.Model):
-     REGION = models.CharField(max_length=2)
+     REGIONES = models.ForeignKey(
+        RegionesPesca,
+        null=True,                  # Permite valores NULL en la base de datos
+        blank=True,
+        on_delete=models.PROTECT,  # Previene eliminar categor�as usadas
+     )
      SumaDeLANCHAS = models.IntegerField()
      slug = models.SlugField(unique=True)
 
@@ -87,6 +124,101 @@ class LanchasRegion(models.Model):
 
      def __str__(self):
          return self.REGION
+#Municipios
+class Municipios(models.Model):
+     polo = models.ForeignKey(
+        Destinos,
+        null=True,                  # Permite valores NULL en la base de datos
+        blank=True,
+        on_delete=models.PROTECT,  # Previene eliminar categor�as usadas
+     )
+     municipio = models.CharField(max_length=50)
+     slug = models.SlugField(unique=True)
+
+     def save(self, *args, **kwargs):
+         self.slug = '%s' % (
+             uuid.uuid1()
+         )
+         super(Municipios, self).save(*args, **kwargs)
+
+     def __str__(self):
+         return self.municipio
+#Hoteles
+class LugaresHoteles(models.Model):
+     Polo = models.ForeignKey(
+        Destinos,
+        null=True,                  # Permite valores NULL en la base de datos
+        blank=True,
+        on_delete=models.PROTECT,  # Previene eliminar categor�as usadas
+     )
+     LugarHotel = models.CharField(max_length=20)
+     Direccion = models.CharField(max_length=250)
+     Telefono = models.CharField(max_length=20)
+     slug = models.SlugField(unique=True)
+
+     def save(self, *args, **kwargs):
+         self.slug = '%s' % (
+             uuid.uuid1()
+         )
+         super(LugaresHoteles, self).save(*args, **kwargs)
+
+     def __str__(self):
+         return self.LugarHotel
+#Tipos de Habitaciones
+class TiposHabitaciones(models.Model):
+     THABITACION = models.CharField(max_length=10)
+     TCANTC = models.IntegerField(blank=True, null=True, default=None)
+     slug = models.SlugField(unique=True)
+
+     def save(self, *args, **kwargs):
+         self.slug = '%s' % (
+             uuid.uuid1()
+         )
+         super(TiposHabitaciones, self).save(*args, **kwargs)
+
+     def __str__(self):
+         return self.THABITACION
+#Regimenes
+class Regimen(models.Model):
+     TPLANALIM = models.CharField(max_length=3)
+     slug = models.SlugField(unique=True)
+
+     def save(self, *args, **kwargs):
+         self.slug = '%s' % (
+             uuid.uuid1()
+         )
+         super(Regimen, self).save(*args, **kwargs)
+
+     def __str__(self):
+         return self.TPLANALIM
+#Casas con rentas de habitaciones
+class RentRoom(models.Model):
+     polocasa = models.ForeignKey(
+        Destinos,
+        null=True,                  # Permite valores NULL en la base de datos
+        blank=True,
+        on_delete=models.PROTECT,  # Previene eliminar categor�as usadas
+     )
+     Direccioncasa = models.CharField(max_length=70)
+     telefonocasa = models.CharField(max_length=10,blank=True, null=True)
+     contactocasa = models.CharField(max_length=30, blank=True, null=True)
+     descripcion = models.CharField(max_length=50, blank=True, null=True)
+     municipcasa = models.ForeignKey(
+        Municipios,
+        null=True,                  # Permite valores NULL en la base de datos
+        blank=True,
+        on_delete=models.PROTECT,  # Previene eliminar categor�as usadas
+     )
+     slug = models.SlugField(unique=True)
+
+     def save(self, *args, **kwargs):
+         self.slug = '%s' % (
+             uuid.uuid1()
+         )
+         super(RentRoom, self).save(*args, **kwargs)
+
+     def __str__(self):
+         return self.Direccioncasa
 
 
 

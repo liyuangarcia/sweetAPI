@@ -125,7 +125,8 @@ class OrigReservasSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrigReservas
         fields = ('id','ONOMBRE','OCORREO','Onreservai','onreservaf','ONINICIOCOD','temporada','codini','codfin','sweetin','automaticfilemaker','automaticexcel','slug')
-        extra_kwargs = {'url': {'lookup_field': 'slug'}, 'OCORREO': {'required': False, 'allow_null': True}}
+        extra_kwargs = {'url': {'lookup_field': 'slug'}, 'OCORREO': {'required': False, 'allow_null': True}, 'temporada': {'required': False, 'allow_null': True},
+                        'codini': {'required': False, 'allow_null': True}, 'codfin': {'required': False, 'allow_null': True}}
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:

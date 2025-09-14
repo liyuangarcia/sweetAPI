@@ -219,33 +219,43 @@ class RentRoom(models.Model):
 
      def __str__(self):
          return self.Direccioncasa
+#Nacionalidades
+class Nacionalidades(models.Model):
+     descripcion = models.CharField(max_length=20)
+     slug = models.SlugField(unique=True)
 
+     def save(self, *args, **kwargs):
+         self.slug = '%s' % (
+             uuid.uuid1()
+         )
+         super(Nacionalidades, self).save(*args, **kwargs)
 
+     def __str__(self):
+         return self.descripcion
+#Origenes de la reserva
+class OrigReservas(models.Model):
+     ONOMBRE = models.CharField(max_length=50)
+     OCORREO = models.CharField(max_length=80, blank=True, null=True)
+     Onreservai = models.CharField(max_length=2)
+     onreservaf = models.CharField(max_length=2)
+     ONINICIOCOD = models.IntegerField()
+     temporada = models.CharField(max_length=50)
+     codini = models.CharField(max_length=50)
+     codfin = models.CharField(max_length=50)
+     sweetin = models.BooleanField()
+     automaticfilemaker = models.BooleanField()
+     automaticexcel = models.BooleanField()
+     slug = models.SlugField(unique=True)
 
-# class OrigReservas(models.Model):
-#     ONO = models.CharField(max_length=2)
-#     ONOMBRE = models.CharField(max_length=50)
-#     OCORREO = models.CharField(max_length=80)
-#     Onreservai = models.CharField(max_length=2)
-#     onreservaf = models.CharField(max_length=2)
-#     ONINICIOCOD = models.IntegerField()
-#     temporada = models.CharField(max_length=50)
-#     codini = models.CharField(max_length=50)
-#     codfin = models.CharField(max_length=50)
-#     sweetin = models.BooleanField()
-#     automaticfilemaker = models.BooleanField()
-#     automaticexcel = models.BooleanField()
-#     slug = models.SlugField(unique=True)
-#
-#     def save(self, *args, **kwargs):
-#         self.slug = '%s' % (
-#             uuid.uuid1()
-#         )
-#         super(OrigReservas, self).save(*args, **kwargs)
-#
-#     def __str__(self):
-#         return self.ONOMBRE
-#
+     def save(self, *args, **kwargs):
+         self.slug = '%s' % (
+             uuid.uuid1()
+         )
+         super(OrigReservas, self).save(*args, **kwargs)
+
+     def __str__(self):
+         return self.ONOMBRE
+
 # class Regiones(models.Model):
 #     NNREGION = models.CharField(max_length=2)
 #     NDREGION = models.CharField(max_length=20)

@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
 from .models import Aeropuertos, GuiasPescas, DestPesca, TipoPesca, RegionesPesca, \
     Destinos, Marinas, LanchasRegion, LugaresHoteles, TiposHabitaciones, Regimen, \
-    Municipios, RentRoom
+    Municipios, RentRoom, Nacionalidades, OrigReservas
 
 class AeropuertosSerializer(serializers.ModelSerializer):
     slug = serializers.SlugField(read_only=True)
@@ -112,7 +112,20 @@ class RentRoomSerializer(serializers.ModelSerializer):
         model = RentRoom
         fields = ('id','polocasa','polotext','municipiotext','Direccioncasa','telefonocasa','contactocasa','descripcion','municipcasa','slug')
         extra_kwargs = {'url': {'lookup_field': 'slug'}, 'telefonocasa': {'required': False, 'allow_null': True}, 'contactocasa': {'required': False, 'allow_null': True}, 'descripcion': {'required': False, 'allow_null': True}}
+class NacionalidadesSerializer(serializers.ModelSerializer):
+    slug = serializers.SlugField(read_only=True)
 
+    class Meta:
+        model = Nacionalidades
+        fields = ('id','descripcion','slug')
+        extra_kwargs = {'url': {'lookup_field': 'slug'}}
+class OrigReservasSerializer(serializers.ModelSerializer):
+    slug = serializers.SlugField(read_only=True)
+
+    class Meta:
+        model = OrigReservas
+        fields = ('id','ONOMBRE','OCORREO','Onreservai','onreservaf','ONINICIOCOD','temporada','codini','codfin','sweetin','automaticfilemaker','automaticexcel','slug')
+        extra_kwargs = {'url': {'lookup_field': 'slug'}, 'OCORREO': {'required': False, 'allow_null': True}}
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:

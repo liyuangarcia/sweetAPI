@@ -8,12 +8,12 @@ from .serializers import LoginSerializer, RegisterSerializer, UserSerializer, \
     AeropuertosSerializer, GuiasPescasSerializer, DestPescaSerializer, TipoPescaSerializer,\
     RegionesPescaSerializer, DestinosSerializer, MarinasSerializer, LanchasRegionSerializer,\
     LugaresHotelesSerializer, TiposHabitacionesSerializer, RegimenSerializer, MunicipiosSerializer, \
-    RentRoomSerializer
+    RentRoomSerializer, NacionalidadesSerializer, OrigReservasSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import Aeropuertos,GuiasPescas, DestPesca,TipoPesca, RegionesPesca, \
     Destinos, Marinas, LanchasRegion, LugaresHoteles, TiposHabitaciones, Regimen, \
-    Municipios, RentRoom
+    Municipios, RentRoom, Nacionalidades, OrigReservas
 
 #@permission_classes([IsAuthenticated])
 class AeropuertosViewSet(viewsets.ModelViewSet):
@@ -97,6 +97,18 @@ class RentRoomViewSet(viewsets.ModelViewSet):
     serializer_class = RentRoomSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['polocasa__DESTINO','Direccioncasa','telefonocasa','contactocasa','descripcion','municipcasa__municipio']
+    lookup_field = 'slug'
+class NacionalidadesViewSet(viewsets.ModelViewSet):
+    queryset = Nacionalidades.objects.all().order_by('descripcion')
+    serializer_class = NacionalidadesSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['descripcion']
+    lookup_field = 'slug'
+class OrigReservasViewSet(viewsets.ModelViewSet):
+    queryset = OrigReservas.objects.all().order_by('ONOMBRE')
+    serializer_class = OrigReservasSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['ONOMBRE','OCORREO','Onreservai','onreservaf','temporada','codini','codfin']
     lookup_field = 'slug'
 
 @api_view(['POST'])

@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
 from .models import Aeropuertos, GuiasPescas, DestPesca, TipoPesca, RegionesPesca, \
     Destinos, Marinas, LanchasRegion, LugaresHoteles, TiposHabitaciones, Regimen, \
-    Municipios, RentRoom, Nacionalidades, OrigReservas
+    Municipios, RentRoom, Nacionalidades, OrigReservas, TiposCarros
 
 class AeropuertosSerializer(serializers.ModelSerializer):
     slug = serializers.SlugField(read_only=True)
@@ -127,6 +127,13 @@ class OrigReservasSerializer(serializers.ModelSerializer):
         fields = ('id','ONOMBRE','OCORREO','Onreservai','onreservaf','ONINICIOCOD','temporada','codini','codfin','sweetin','automaticfilemaker','automaticexcel','slug')
         extra_kwargs = {'url': {'lookup_field': 'slug'}, 'OCORREO': {'required': False, 'allow_null': True}, 'temporada': {'required': False, 'allow_null': True},
                         'codini': {'required': False, 'allow_null': True}, 'codfin': {'required': False, 'allow_null': True}}
+class TiposCarrosSerializer(serializers.ModelSerializer):
+    slug = serializers.SlugField(read_only=True)
+
+    class Meta:
+        model = TiposCarros
+        fields = ('id','desctipocarro','slug')
+        extra_kwargs = {'url': {'lookup_field': 'slug'}}
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:

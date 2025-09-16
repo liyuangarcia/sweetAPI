@@ -4,7 +4,7 @@ from . import views
 from .views import AeropuertosViewSet,GuiasPescasViewSet,DestPescaViewSet, TipoPescaViewSet, \
     RegionesPescaViewSet, DestinosViewSet, MarinasViewSet, LanchasRegionViewSet,LugaresHotelesViewSet, \
     TiposHabitacionesViewSet, RegimenViewSet, MunicipiosViewSet,RentRoomViewSet, NacionalidadesViewSet, \
-    OrigReservasViewSet
+    OrigReservasViewSet, TiposCarrosViewSet
 from rest_framework_simplejwt.views import TokenRefreshView
 from rest_framework import routers
 
@@ -24,6 +24,7 @@ router.register('municipios', MunicipiosViewSet)
 router.register('rentroom', RentRoomViewSet)
 router.register('nacionalidades', NacionalidadesViewSet)
 router.register('origenreservas', OrigReservasViewSet)
+router.register('tiposcarros', TiposCarrosViewSet)
 
 urlpatterns = [
     path('login/', views.login_view, name='login'),

@@ -8,12 +8,12 @@ from .serializers import LoginSerializer, RegisterSerializer, UserSerializer, \
     AeropuertosSerializer, GuiasPescasSerializer, DestPescaSerializer, TipoPescaSerializer,\
     RegionesPescaSerializer, DestinosSerializer, MarinasSerializer, LanchasRegionSerializer,\
     LugaresHotelesSerializer, TiposHabitacionesSerializer, RegimenSerializer, MunicipiosSerializer, \
-    RentRoomSerializer, NacionalidadesSerializer, OrigReservasSerializer
+    RentRoomSerializer, NacionalidadesSerializer, OrigReservasSerializer, TiposCarrosSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import Aeropuertos,GuiasPescas, DestPesca,TipoPesca, RegionesPesca, \
     Destinos, Marinas, LanchasRegion, LugaresHoteles, TiposHabitaciones, Regimen, \
-    Municipios, RentRoom, Nacionalidades, OrigReservas
+    Municipios, RentRoom, Nacionalidades, OrigReservas, TiposCarros
 
 #@permission_classes([IsAuthenticated])
 class AeropuertosViewSet(viewsets.ModelViewSet):
@@ -109,6 +109,12 @@ class OrigReservasViewSet(viewsets.ModelViewSet):
     serializer_class = OrigReservasSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['ONOMBRE','OCORREO','Onreservai','onreservaf','temporada','codini','codfin']
+    lookup_field = 'slug'
+class TiposCarrosViewSet(viewsets.ModelViewSet):
+    queryset = TiposCarros.objects.all().order_by('desctipocarro')
+    serializer_class = TiposCarrosSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['desctipocarro']
     lookup_field = 'slug'
 
 @api_view(['POST'])

@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
 from .models import Aeropuertos, GuiasPescas, DestPesca, TipoPesca, RegionesPesca, \
     Destinos, Marinas, LanchasRegion, LugaresHoteles, TiposHabitaciones, Regimen, \
-    Municipios, RentRoom, Nacionalidades, OrigReservas, TiposCarros
+    Municipios, RentRoom, Nacionalidades, OrigReservas, TiposCarros, VuelosDomesticos
 
 class AeropuertosSerializer(serializers.ModelSerializer):
     slug = serializers.SlugField(read_only=True)
@@ -133,6 +133,21 @@ class TiposCarrosSerializer(serializers.ModelSerializer):
     class Meta:
         model = TiposCarros
         fields = ('id','desctipocarro','slug')
+        extra_kwargs = {'url': {'lookup_field': 'slug'}}
+class VuelosDomesticosSerializer(serializers.ModelSerializer):
+    vdpolotext = serializers.ReadOnlyField(source='vdpolo.DESTINO')
+    vddestinotext = serializers.ReadOnlyField(source='vddestino.aaerodescripcion')
+    vdterminaltext = serializers.ReadOnlyField(source='vdterminal.aaerodescripcion')
+    vdlugardesalidatext = serializers.ReadOnlyField(source='vdlugardesalida.DESTINO')
+    slug = serializers.SlugField(read_only=True)
+
+    class Meta:
+        model = VuelosDomesticos
+        fields = ('id','vdnvuelo','vdfvueloi','vdfvuelor','vddiasemana','vdpolo',
+                  'vdpolotext','vddestino','vddestinotext','vdterminal',
+                  'vdterminaltext','vdlugardesalida','vdlugardesalidatext',
+                  'vdhsalida','vdhllegada','vdcapacasignadai', 'vdpnrasignadoi',
+                  'vdcapacasignadar','vdpnrasignador','slug')
         extra_kwargs = {'url': {'lookup_field': 'slug'}}
 
 class UserSerializer(serializers.ModelSerializer):

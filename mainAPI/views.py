@@ -8,12 +8,13 @@ from .serializers import LoginSerializer, RegisterSerializer, UserSerializer, \
     AeropuertosSerializer, GuiasPescasSerializer, DestPescaSerializer, TipoPescaSerializer,\
     RegionesPescaSerializer, DestinosSerializer, MarinasSerializer, LanchasRegionSerializer,\
     LugaresHotelesSerializer, TiposHabitacionesSerializer, RegimenSerializer, MunicipiosSerializer, \
-    RentRoomSerializer, NacionalidadesSerializer, OrigReservasSerializer, TiposCarrosSerializer
+    RentRoomSerializer, NacionalidadesSerializer, OrigReservasSerializer, TiposCarrosSerializer, \
+    VuelosDomesticosSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import Aeropuertos,GuiasPescas, DestPesca,TipoPesca, RegionesPesca, \
     Destinos, Marinas, LanchasRegion, LugaresHoteles, TiposHabitaciones, Regimen, \
-    Municipios, RentRoom, Nacionalidades, OrigReservas, TiposCarros
+    Municipios, RentRoom, Nacionalidades, OrigReservas, TiposCarros, VuelosDomesticos
 
 #@permission_classes([IsAuthenticated])
 class AeropuertosViewSet(viewsets.ModelViewSet):
@@ -116,6 +117,16 @@ class TiposCarrosViewSet(viewsets.ModelViewSet):
     filter_backends = [filters.SearchFilter]
     search_fields = ['desctipocarro']
     lookup_field = 'slug'
+class VuelosDomesticosViewSet(viewsets.ModelViewSet):
+    queryset = VuelosDomesticos.objects.all().order_by('vdnvuelo')
+    serializer_class = VuelosDomesticosSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['vdnvuelo','vdfvueloi','vdfvuelor','vddiasemana','vdpolo__DESTINO',
+                     'vddestino__aaerodescripcion','vdterminal__aaerodescripcion',
+                     'vdlugardesalida__DESTINO','vdhsalida','vdhllegada','vdcapacasignadai',
+                     'vdpnrasignadoi','vdcapacasignadar','vdpnrasignador']
+    lookup_field = 'slug'
+
 
 @api_view(['POST'])
 @permission_classes([AllowAny])

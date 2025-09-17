@@ -279,51 +279,55 @@ class TiposCarros(models.Model):
      def __str__(self):
          return self.desctipocarro
 #Medios de transfer
-# class VuelosDomesticos(models.Model):
-#      vdnvuelo = models.CharField(max_length=50)
-#      vdfvueloi = models.DateField()
-#      vdfvuelor = models.DateField()
-#      vddiasemana = models.CharField(max_length=2, choices=Week)
-#      vdpolo = models.ForeignKey(
-#         Destinos,
-#         null=True,                  # Permite valores NULL en la base de datos
-#         blank=True,
-#         on_delete=models.PROTECT,  # Previene eliminar categor�as usadas
-#      )
-#      vddestino = models.ForeignKey(
-#         Aeropuertos,
-#         null=True,                  # Permite valores NULL en la base de datos
-#         blank=True,
-#         on_delete=models.PROTECT,  # Previene eliminar categor�as usadas
-#      )
-#      vdterminal = models.ForeignKey(
-#         Aeropuertos,
-#         null=True,                  # Permite valores NULL en la base de datos
-#         blank=True,
-#         on_delete=models.PROTECT,  # Previene eliminar categor�as usadas
-#      )
-#      vdlugardesalida = models.ForeignKey(
-#         Destinos,
-#         null=True,                  # Permite valores NULL en la base de datos
-#         blank=True,
-#         on_delete=models.PROTECT,  # Previene eliminar categor�as usadas
-#      )
-#      vdhsalida = models.DateField()
-#      vdhllegada = models.DateField()
-#      vdcapacasignadai = models.IntegerField()
-#      vdpnrasignadoi = models.CharField(max_length=10)
-#      vdcapacasignadar = models.IntegerField()
-#      vdpnrasignador = models.CharField(max_length=10)
-#      slug = models.SlugField(unique=True)
-#
-#      def save(self, *args, **kwargs):
-#          self.slug = '%s' % (
-#              uuid.uuid1()
-#          )
-#          super(VuelosDomesticos, self).save(*args, **kwargs)
-#
-#      def __str__(self):
-#          return self.vdnvuelo
+class VuelosDomesticos(models.Model):
+      vdnvuelo = models.CharField(max_length=50)
+      vdfvueloi = models.DateField()
+      vdfvuelor = models.DateField()
+      vddiasemana = models.CharField(max_length=2, choices=Week)
+      vdpolo = models.ForeignKey(
+         Destinos,
+         null=True,                  # Permite valores NULL en la base de datos
+         blank=True,
+         related_name='vuelos_polo',
+         on_delete=models.PROTECT,  # Previene eliminar categor�as usadas
+      )
+      vddestino = models.ForeignKey(
+         Aeropuertos,
+         null=True,                  # Permite valores NULL en la base de datos
+         blank=True,
+         related_name='vuelos_destino',
+         on_delete=models.PROTECT,  # Previene eliminar categor�as usadas
+      )
+      vdterminal = models.ForeignKey(
+         Aeropuertos,
+         null=True,                  # Permite valores NULL en la base de datos
+         blank=True,
+         related_name='vuelos_terminal',
+         on_delete=models.PROTECT,  # Previene eliminar categor�as usadas
+      )
+      vdlugardesalida = models.ForeignKey(
+         Destinos,
+         null=True,                  # Permite valores NULL en la base de datos
+         blank=True,
+         related_name='vuelos_lugar_salida',
+         on_delete=models.PROTECT,  # Previene eliminar categor�as usadas
+      )
+      vdhsalida = models.DateField()
+      vdhllegada = models.DateField()
+      vdcapacasignadai = models.IntegerField()
+      vdpnrasignadoi = models.CharField(max_length=10)
+      vdcapacasignadar = models.IntegerField()
+      vdpnrasignador = models.CharField(max_length=10)
+      slug = models.SlugField(unique=True)
+
+      def save(self, *args, **kwargs):
+          self.slug = '%s' % (
+              uuid.uuid1()
+          )
+          super(VuelosDomesticos, self).save(*args, **kwargs)
+
+      def __str__(self):
+          return self.vdnvuelo
 
 
 # class Regiones(models.Model):

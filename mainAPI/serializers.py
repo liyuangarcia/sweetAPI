@@ -7,6 +7,18 @@ from .models import Aeropuertos, GuiasPescas, DestPesca, TipoPesca, RegionesPesc
     Destinos, Marinas, LanchasRegion, LugaresHoteles, TiposHabitaciones, Regimen, \
     Municipios, RentRoom, Nacionalidades, OrigReservas, TiposCarros, VuelosDomesticos
 
+Week = (
+    (1, 'Domingo'),
+    (2, 'Lunes'),
+    (3, 'Martes'),
+    (4, 'Miercoles'),
+    (5, 'Jueves'),
+    (6, 'Viernes'),
+    (7, 'Sábado'),
+)
+
+WEEK_DICT = dict(Week)
+
 class AeropuertosSerializer(serializers.ModelSerializer):
     slug = serializers.SlugField(read_only=True)
 
@@ -139,16 +151,28 @@ class VuelosDomesticosSerializer(serializers.ModelSerializer):
     vddestinotext = serializers.ReadOnlyField(source='vddestino.aaerodescripcion')
     vdterminaltext = serializers.ReadOnlyField(source='vdterminal.aaerodescripcion')
     vdlugardesalidatext = serializers.ReadOnlyField(source='vdlugardesalida.DESTINO')
+    vddiasemanatext = serializers.SerializerMethodField()
     slug = serializers.SlugField(read_only=True)
 
     class Meta:
         model = VuelosDomesticos
-        fields = ('id','vdnvuelo','vdfvueloi','vdfvuelor','vddiasemana','vdpolo',
+        fields = ('id','vdnvuelo','vdfvueloi','vdfvuelor','vddiasemana','vddiasemanatext','vdpolo',
                   'vdpolotext','vddestino','vddestinotext','vdterminal',
                   'vdterminaltext','vdlugardesalida','vdlugardesalidatext',
                   'vdhsalida','vdhllegada','vdcapacasignadai', 'vdpnrasignadoi',
                   'vdcapacasignadar','vdpnrasignador','slug')
-        extra_kwargs = {'url': {'lookup_field': 'slug'}}
+        extra_kwargs = {'url': {'lookup_field': 'slug'}, 'vdfvuelor': {'required': False, 'allow_null': True},
+                        'vdpnrasignadoi': {'required': False, 'allow_null': True}, 'vdpnrasignador': {'required': False, 'allow_null': True},
+                        'vddiasemana': {'required': False, 'allow_null': True}, 'vdcapacasignadai': {'required': False, 'allow_null': True}}
+
+    def get_vddiasemanatext(self, obj):
+        if obj.vddiasemana:
+            try:
+                dia_numero = int(obj.vddiasemana)
+                return WEEK_DICT.get(dia_numero, 'Desconocido')
+            except (ValueError, TypeError):
+                return 'Inválido'
+        return None
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:

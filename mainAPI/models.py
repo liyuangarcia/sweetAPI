@@ -282,8 +282,8 @@ class TiposCarros(models.Model):
 class VuelosDomesticos(models.Model):
       vdnvuelo = models.CharField(max_length=50)
       vdfvueloi = models.DateField()
-      vdfvuelor = models.DateField()
-      vddiasemana = models.CharField(max_length=2, choices=Week)
+      vdfvuelor = models.DateField(null=True, blank=True)
+      vddiasemana = models.CharField(max_length=2, choices=Week,null=True, blank=True)
       vdpolo = models.ForeignKey(
          Destinos,
          null=True,                  # Permite valores NULL en la base de datos
@@ -312,12 +312,12 @@ class VuelosDomesticos(models.Model):
          related_name='vuelos_lugar_salida',
          on_delete=models.PROTECT,  # Previene eliminar categor�as usadas
       )
-      vdhsalida = models.DateField()
-      vdhllegada = models.DateField()
-      vdcapacasignadai = models.IntegerField()
-      vdpnrasignadoi = models.CharField(max_length=10)
+      vdhsalida =  models.TimeField()
+      vdhllegada =  models.TimeField()
+      vdcapacasignadai = models.IntegerField(blank=True, null=True, default=0)
+      vdpnrasignadoi = models.CharField(max_length=10,null=True, blank=True)
       vdcapacasignadar = models.IntegerField()
-      vdpnrasignador = models.CharField(max_length=10)
+      vdpnrasignador = models.CharField(max_length=10,null=True, blank=True)
       slug = models.SlugField(unique=True)
 
       def save(self, *args, **kwargs):

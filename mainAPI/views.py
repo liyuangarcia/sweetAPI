@@ -9,12 +9,14 @@ from .serializers import LoginSerializer, RegisterSerializer, UserSerializer, \
     RegionesPescaSerializer, DestinosSerializer, MarinasSerializer, LanchasRegionSerializer,\
     LugaresHotelesSerializer, TiposHabitacionesSerializer, RegimenSerializer, MunicipiosSerializer, \
     RentRoomSerializer, NacionalidadesSerializer, OrigReservasSerializer, TiposCarrosSerializer, \
-    VuelosDomesticosSerializer
+    VuelosDomesticosSerializer, OperadoresSerializer, AgenciasSerializer
+
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import Aeropuertos,GuiasPescas, DestPesca,TipoPesca, RegionesPesca, \
     Destinos, Marinas, LanchasRegion, LugaresHoteles, TiposHabitaciones, Regimen, \
-    Municipios, RentRoom, Nacionalidades, OrigReservas, TiposCarros, VuelosDomesticos
+    Municipios, RentRoom, Nacionalidades, OrigReservas, TiposCarros, VuelosDomesticos, \
+    Operadores, Agencias
 
 #@permission_classes([IsAuthenticated])
 class AeropuertosViewSet(viewsets.ModelViewSet):
@@ -125,6 +127,18 @@ class VuelosDomesticosViewSet(viewsets.ModelViewSet):
                      'vddestino__aaerodescripcion','vdterminal__aaerodescripcion',
                      'vdlugardesalida__DESTINO','vdhsalida','vdhllegada','vdcapacasignadai',
                      'vdpnrasignadoi','vdcapacasignadar','vdpnrasignador']
+    lookup_field = 'slug'
+class OperadoresViewSet(viewsets.ModelViewSet):
+    queryset = Operadores.objects.all().order_by('OPERADOR')
+    serializer_class = OperadoresSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['OPERADOR','IOPERADOR','ioperador2']
+    lookup_field = 'slug'
+class AgenciasViewSet(viewsets.ModelViewSet):
+    queryset = Agencias.objects.all().order_by('AGENCIA')
+    serializer_class = AgenciasSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['AGENCIA']
     lookup_field = 'slug'
 
 

@@ -5,7 +5,8 @@ from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
 from .models import Aeropuertos, GuiasPescas, DestPesca, TipoPesca, RegionesPesca, \
     Destinos, Marinas, LanchasRegion, LugaresHoteles, TiposHabitaciones, Regimen, \
-    Municipios, RentRoom, Nacionalidades, OrigReservas, TiposCarros, VuelosDomesticos
+    Municipios, RentRoom, Nacionalidades, OrigReservas, TiposCarros, VuelosDomesticos, \
+    Operadores, Agencias
 
 Week = (
     (1, 'Domingo'),
@@ -173,6 +174,23 @@ class VuelosDomesticosSerializer(serializers.ModelSerializer):
             except (ValueError, TypeError):
                 return 'Inválido'
         return None
+class OperadoresSerializer(serializers.ModelSerializer):
+    slug = serializers.SlugField(read_only=True)
+
+    class Meta:
+        model = Operadores
+        fields = ('id','OPERADOR','IOPERADOR','ioperador2','OSEGUIMIENTO','ocodigo','slug')
+        extra_kwargs = {'url': {'lookup_field': 'slug'},
+                        'IOPERADOR': {'required': False, 'allow_null': True},
+                        'ioperador2': {'required': False, 'allow_null': True}}
+class AgenciasSerializer(serializers.ModelSerializer):
+    slug = serializers.SlugField(read_only=True)
+
+    class Meta:
+        model = Agencias
+        fields = ('id','AGENCIA','slug')
+        extra_kwargs = {'url': {'lookup_field': 'slug'}}
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:

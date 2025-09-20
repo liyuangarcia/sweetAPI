@@ -328,7 +328,36 @@ class VuelosDomesticos(models.Model):
 
       def __str__(self):
           return self.vdnvuelo
+#Operadores
+class Operadores(models.Model):
+     OPERADOR = models.CharField(max_length=20)
+     IOPERADOR = models.CharField(max_length=20,null=True, blank=True)
+     ioperador2 = models.CharField(max_length=20,null=True, blank=True)
+     OSEGUIMIENTO = models.BooleanField()
+     ocodigo = models.BooleanField()
+     slug = models.SlugField(unique=True)
 
+     def save(self, *args, **kwargs):
+         self.slug = '%s' % (
+             uuid.uuid1()
+         )
+         super(Operadores, self).save(*args, **kwargs)
+
+     def __str__(self):
+         return self.OPERADOR
+#Agencias
+class Agencias(models.Model):
+     AGENCIA = models.CharField(max_length=20)
+     slug = models.SlugField(unique=True)
+
+     def save(self, *args, **kwargs):
+         self.slug = '%s' % (
+             uuid.uuid1()
+         )
+         super(Agencias, self).save(*args, **kwargs)
+
+     def __str__(self):
+         return self.AGENCIA
 
 # class Regiones(models.Model):
 #     NNREGION = models.CharField(max_length=2)
@@ -344,36 +373,7 @@ class VuelosDomesticos(models.Model):
 #     def __str__(self):
 #         return self.NDREGION
 #
-# class DestPesca(models.Model):
-#     NDESTINO = models.CharField(max_length=2)
-#     DESTINO = models.CharField(max_length=20)
-#     REGION = models.CharField(max_length=2)
-#     LANCHAS = models.IntegerField()
-#     slug = models.SlugField(unique=True)
-#
-#     def save(self, *args, **kwargs):
-#         self.slug = '%s' % (
-#             uuid.uuid1()
-#         )
-#         super(DestPesca, self).save(*args, **kwargs)
-#
-#     def __str__(self):
-#         return self.DESTINO
-#
-# class Agencias(models.Model):
-#     NAGENCIAS = models.CharField(max_length=3)
-#     AGENCIA = models.CharField(max_length=20)
-#     slug = models.SlugField(unique=True)
-#
-#     def save(self, *args, **kwargs):
-#         self.slug = '%s' % (
-#             uuid.uuid1()
-#         )
-#         super(Agencias, self).save(*args, **kwargs)
-#
-#     def __str__(self):
-#         return self.AGENCIA
-#
+
 # class DatGenerales(models.Model):
 #     NRESERVA = models.CharField(max_length=10)
 #     NIZQUIERDA = models.CharField(max_length=2)

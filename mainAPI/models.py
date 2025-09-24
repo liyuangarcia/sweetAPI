@@ -374,58 +374,82 @@ class Agencias(models.Model):
 #         return self.NDREGION
 #
 
-# class DatGenerales(models.Model):
-#     NRESERVA = models.CharField(max_length=10)
-#     NIZQUIERDA = models.CharField(max_length=2)
-#     NDERECHA = models.CharField(max_length=6)
-#     RCSOLICITUD = models.IntegerField()
-#     NDERECHA = models.CharField(max_length=6)
-#     RORIGENDELARESERVA = models.CharField(max_length=2)
-#     RCORIGENDELARESERVA = models.IntegerField()
-#     RCARPETA = models.IntegerField()
-#     RISERVICIO = models.DateField()
-#     RFSERVICIO = models.DateField()
-#     RCUBATUR = models.CharField(max_length=10)
-#     RHOTEL = models.CharField(max_length=4)
-#     RNOMBRE = models.CharField(max_length=50)
-#     RAGENCIA = models.CharField(max_length=3)
-#     ROPERADOR = models.CharField(max_length=3)
-#     RCANTPAX = models.IntegerField()
-#     RCANTPAXPREV = models.IntegerField()
-#     RESTADODELARESERVA = models.CharField(max_length=1)
-#     RCOMENTARIO = models.CharField(max_length=100)
-#     RRECOGIDA = models.CharField(max_length=20)
-#     RALOJAMIENTO = models.CharField(max_length=2)
-#     RTIPODEPESCA = models.CharField(max_length=1)
-#     RIN = models.DateField()
-#     ROUT = models.DateField()
-#     RDESTINO = models.CharField(max_length=2)
-#     RCPAXDESTINO = models.IntegerField()
-#     RCPAXDESTINOPREV = models.IntegerField()
-#     RFSOLICITUD = models.DateField()
-#     REXCLUSIVA = models.BooleanField()
-#     rinicial = models.IntegerField()
-#     RULTIMOCLIEN = models.IntegerField()
-#     dias = models.IntegerField()
-#     bloqueada = models.BooleanField()
-#     RCDADOXOPERADOR = models.CharField(max_length=50)
-#     temporada = models.CharField(max_length=11)
-#     solicitante = models.CharField(max_length=2)
-#     modreserva = models.IntegerField()
-#     modaloj = models.IntegerField()
-#     modtransf = models.IntegerField()
-#     modclient = models.IntegerField()
-#     modocausas = models.IntegerField()
-#     rcerrada = models.BooleanField()
-#     rPROTEGIDA = models.BooleanField()
-#     slug = models.SlugField(unique=True)
-#
-#     def save(self, *args, **kwargs):
-#         self.slug = '%s' % (
-#             uuid.uuid1()
-#         )
-#         super(DatGenerales, self).save(*args, **kwargs)
-#
-#     def __str__(self):
-#         return self.RNOMBRE
+class DatGenerales(models.Model):
+     NRESERVA = models.CharField(max_length=10, null=True, blank=True)
+     NIZQUIERDA = models.CharField(max_length=2, null=True, blank=True)
+     NDERECHA = models.CharField(max_length=6, null=True, blank=True)
+     RCSOLICITUD = models.IntegerField(null=True, blank=True)
+     NDERECHA = models.CharField(max_length=6, null=True, blank=True)
+     RORIGENDELARESERVA = models.ForeignKey(
+         OrigReservas,
+         null=True,                  # Permite valores NULL en la base de datos
+         blank=True,
+         related_name='orige_reserva',
+         on_delete=models.PROTECT,  # Previene eliminar categor�as usadas
+      )
+     RCORIGENDELARESERVA = models.IntegerField(null=True, blank=True)
+     RCARPETA = models.IntegerField(null=True, blank=True)
+     RISERVICIO = models.DateField(null=True, blank=True)
+     RFSERVICIO = models.DateField(null=True, blank=True)
+     RCUBATUR = models.CharField(max_length=10, null=True, blank=True)
+     RHOTEL = models.CharField(max_length=4, null=True, blank=True)
+     RNOMBRE = models.CharField(max_length=50)
+     RAGENCIA = models.ForeignKey(
+         Agencias,
+         null=True,                  # Permite valores NULL en la base de datos
+         blank=True,
+         related_name='agencias_reserva',
+         on_delete=models.PROTECT,  # Previene eliminar categor�as usadas
+      )
+     ROPERADOR = models.ForeignKey(
+         Operadores,
+         null=True,                  # Permite valores NULL en la base de datos
+         blank=True,
+         related_name='operador_reserva',
+         on_delete=models.PROTECT,  # Previene eliminar categor�as usadas
+      )
+     RCANTPAX = models.IntegerField(null=True, blank=True)
+     RCANTPAXPREV = models.IntegerField()
+     RESTADODELARESERVA = models.CharField(max_length=1, null=True, blank=True)
+     RCOMENTARIO = models.CharField(max_length=100, null=True, blank=True)
+     RRECOGIDA = models.CharField(max_length=20, null=True, blank=True)
+     RALOJAMIENTO = models.CharField(max_length=2, null=True, blank=True)
+     RTIPODEPESCA = models.CharField(max_length=1, null=True, blank=True)
+     RIN = models.DateField(null=True, blank=True)
+     ROUT = models.DateField(null=True, blank=True)
+     RDESTINO = models.ForeignKey(
+         DestPesca,
+         null=True,                  # Permite valores NULL en la base de datos
+         blank=True,
+         related_name='destino_reserva',
+         on_delete=models.PROTECT,  # Previene eliminar categor�as usadas
+      )
+     RCPAXDESTINO = models.IntegerField(null=True, blank=True)
+     RCPAXDESTINOPREV = models.IntegerField(null=True, blank=True)
+     RFSOLICITUD = models.DateField(null=True, blank=True)
+     REXCLUSIVA = models.BooleanField()
+     rinicial = models.IntegerField(null=True, blank=True)
+     RULTIMOCLIEN = models.IntegerField(null=True, blank=True)
+     dias = models.IntegerField(null=True, blank=True)
+     bloqueada = models.BooleanField()
+     RCDADOXOPERADOR = models.CharField(max_length=50, null=True, blank=True)
+     temporada = models.CharField(max_length=11, null=True, blank=True)
+     solicitante = models.CharField(max_length=2, null=True, blank=True)
+     modreserva = models.IntegerField(null=True, blank=True)
+     modaloj = models.IntegerField(null=True, blank=True)
+     modtransf = models.IntegerField(null=True, blank=True)
+     modclient = models.IntegerField(null=True, blank=True)
+     modocausas = models.IntegerField(null=True, blank=True)
+     rcerrada = models.BooleanField()
+     rPROTEGIDA = models.BooleanField()
+     slug = models.SlugField(unique=True)
+
+     def save(self, *args, **kwargs):
+         self.slug = '%s' % (
+             uuid.uuid1()
+         )
+         super(DatGenerales, self).save(*args, **kwargs)
+
+     def __str__(self):
+         return self.RNOMBRE
 

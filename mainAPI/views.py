@@ -9,14 +9,14 @@ from .serializers import LoginSerializer, RegisterSerializer, UserSerializer, \
     RegionesPescaSerializer, DestinosSerializer, MarinasSerializer, LanchasRegionSerializer,\
     LugaresHotelesSerializer, TiposHabitacionesSerializer, RegimenSerializer, MunicipiosSerializer, \
     RentRoomSerializer, NacionalidadesSerializer, OrigReservasSerializer, TiposCarrosSerializer, \
-    VuelosDomesticosSerializer, OperadoresSerializer, AgenciasSerializer
+    VuelosDomesticosSerializer, OperadoresSerializer, AgenciasSerializer, DatGeneralesSerializer
 
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import Aeropuertos,GuiasPescas, DestPesca,TipoPesca, RegionesPesca, \
     Destinos, Marinas, LanchasRegion, LugaresHoteles, TiposHabitaciones, Regimen, \
     Municipios, RentRoom, Nacionalidades, OrigReservas, TiposCarros, VuelosDomesticos, \
-    Operadores, Agencias
+    Operadores, Agencias, DatGenerales
 
 #@permission_classes([IsAuthenticated])
 class AeropuertosViewSet(viewsets.ModelViewSet):
@@ -139,6 +139,18 @@ class AgenciasViewSet(viewsets.ModelViewSet):
     serializer_class = AgenciasSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['AGENCIA']
+    lookup_field = 'slug'
+class DatGeneralesViewSet(viewsets.ModelViewSet):
+    queryset = DatGenerales.objects.all().order_by('RNOMBRE')
+    serializer_class = DatGeneralesSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['NRESERVA', 'NIZQUIERDA', 'NDERECHA', 'RCSOLICITUD', 'RORIGENDELARESERVA__ONOMBRE',
+                     'RCORIGENDELARESERVA', 'RCARPETA', 'RISERVICIO', 'RFSERVICIO', 'RCUBATUR', 'RHOTEL',
+                     'RNOMBRE', 'RAGENCIA__AGENCIA', 'ROPERADOR__OPERADOR', 'RCANTPAX', 'RCANTPAXPREV',
+                     'RCOMENTARIO', 'RRECOGIDA', 'RALOJAMIENTO', 'RTIPODEPESCA', 'RIN', 'ROUT',
+                     'RDESTINO__DESTINO', 'RCPAXDESTINO', 'RCPAXDESTINOPREV', 'RFSOLICITUD', 'rinicial',
+                     'RULTIMOCLIEN', 'dias', 'RCDADOXOPERADOR', 'temporada', 'solicitante', 'modreserva',
+                     'modaloj', 'modtransf', 'modclient', 'modocausas']
     lookup_field = 'slug'
 
 

@@ -6,7 +6,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from .models import Aeropuertos, GuiasPescas, DestPesca, TipoPesca, RegionesPesca, \
     Destinos, Marinas, LanchasRegion, LugaresHoteles, TiposHabitaciones, Regimen, \
     Municipios, RentRoom, Nacionalidades, OrigReservas, TiposCarros, VuelosDomesticos, \
-    Operadores, Agencias
+    Operadores, Agencias, DatGenerales
 
 Week = (
     (1, 'Domingo'),
@@ -190,6 +190,59 @@ class AgenciasSerializer(serializers.ModelSerializer):
         model = Agencias
         fields = ('id','AGENCIA','slug')
         extra_kwargs = {'url': {'lookup_field': 'slug'}}
+class DatGeneralesSerializer(serializers.ModelSerializer):
+    slug = serializers.SlugField(read_only=True)
+
+    class Meta:
+        model = DatGenerales
+        fields = ('id','NRESERVA', 'NIZQUIERDA', 'NDERECHA', 'RCSOLICITUD',
+                  'NDERECHA', 'RORIGENDELARESERVA', 'RCORIGENDELARESERVA',
+                  'RCARPETA', 'RISERVICIO', 'RFSERVICIO', 'RCUBATUR', 'RHOTEL',
+                  'RNOMBRE', 'RAGENCIA', 'ROPERADOR', 'RCANTPAX', 'RCANTPAXPREV',
+                  'RESTADODELARESERVA', 'RCOMENTARIO', 'RRECOGIDA', 'RALOJAMIENTO',
+                  'RTIPODEPESCA', 'RIN', 'ROUT', 'RDESTINO', 'RCPAXDESTINO',
+                  'RCPAXDESTINOPREV', 'RFSOLICITUD', 'REXCLUSIVA', 'rinicial',
+                  'RULTIMOCLIEN', 'dias', 'bloqueada', 'RCDADOXOPERADOR', 'temporada',
+                  'solicitante', 'modreserva', 'modaloj', 'modtransf', 'modclient',
+                  'modocausas', 'rcerrada', 'rPROTEGIDA','slug')
+        extra_kwargs = {'url': {'lookup_field': 'slug'},
+                        'NRESERVA' : {'required': False, 'allow_null': True},
+                        'NIZQUIERDA' : {'required': False, 'allow_null': True},
+                        'NDERECHA' : {'required': False, 'allow_null': True},
+                        'RCSOLICITUD' : {'required': False, 'allow_null': True},
+                        'NDERECHA' : {'required': False, 'allow_null': True},
+                        'RORIGENDELARESERVA' : {'required': False, 'allow_null': True},
+                        'RCORIGENDELARESERVA' : {'required': False, 'allow_null': True},
+                        'RCARPETA' : {'required': False, 'allow_null': True},
+                        'RISERVICIO' : {'required': False, 'allow_null': True},
+                        'RFSERVICIO' : {'required': False, 'allow_null': True},
+                        'RCUBATUR' : {'required': False, 'allow_null': True},
+                        'RHOTEL' : {'required': False, 'allow_null': True},
+                        'RAGENCIA' : {'required': False, 'allow_null': True},
+                        'ROPERADOR' : {'required': False, 'allow_null': True},
+                        'RCANTPAX' : {'required': False, 'allow_null': True},
+                        'RESTADODELARESERVA' : {'required': False, 'allow_null': True},
+                        'RCOMENTARIO' : {'required': False, 'allow_null': True},
+                        'RRECOGIDA' : {'required': False, 'allow_null': True},
+                        'RALOJAMIENTO' : {'required': False, 'allow_null': True},
+                        'RTIPODEPESCA' : {'required': False, 'allow_null': True},
+                        'RIN' : {'required': False, 'allow_null': True},
+                        'ROUT' : {'required': False, 'allow_null': True},
+                        'RDESTINO' : {'required': False, 'allow_null': True},
+                        'RCPAXDESTINO' : {'required': False, 'allow_null': True},
+                        'RCPAXDESTINOPREV' : {'required': False, 'allow_null': True},
+                        'RFSOLICITUD' : {'required': False, 'allow_null': True},
+                        'rinicial' : {'required': False, 'allow_null': True},
+                        'RULTIMOCLIEN' : {'required': False, 'allow_null': True},
+                        'dias' : {'required': False, 'allow_null': True},
+                        'RCDADOXOPERADOR' : {'required': False, 'allow_null': True},
+                        'temporada' : {'required': False, 'allow_null': True},
+                        'solicitante' : {'required': False, 'allow_null': True},
+                        'modreserva' : {'required': False, 'allow_null': True},
+                        'modaloj' : {'required': False, 'allow_null': True},
+                        'modtransf' : {'required': False, 'allow_null': True},
+                        'modclient' : {'required': False, 'allow_null': True},
+                        'modocausas' : {'required': False, 'allow_null': True}}
 
 
 class UserSerializer(serializers.ModelSerializer):

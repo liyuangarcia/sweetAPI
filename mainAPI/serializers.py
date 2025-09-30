@@ -191,13 +191,15 @@ class AgenciasSerializer(serializers.ModelSerializer):
         fields = ('id','AGENCIA','slug')
         extra_kwargs = {'url': {'lookup_field': 'slug'}}
 class DatGeneralesSerializer(serializers.ModelSerializer):
+    RORIGENDELARESERVAtext = serializers.ReadOnlyField(source='RORIGENDELARESERVA.ONOMBRE')
+    RDESTINOtext = serializers.ReadOnlyField(source='RDESTINO.DESTINO')
     slug = serializers.SlugField(read_only=True)
 
     class Meta:
         model = DatGenerales
         fields = ('id','NRESERVA', 'NIZQUIERDA', 'NDERECHA', 'RCSOLICITUD',
-                  'NDERECHA', 'RORIGENDELARESERVA', 'RCORIGENDELARESERVA',
-                  'RCARPETA', 'RISERVICIO', 'RFSERVICIO', 'RCUBATUR', 'RHOTEL',
+                  'NDERECHA', 'RORIGENDELARESERVA', 'RORIGENDELARESERVAtext','RCORIGENDELARESERVA',
+                  'RCARPETA', 'RISERVICIO', 'RFSERVICIO', 'RCUBATUR', 'RHOTEL','RDESTINOtext',
                   'RNOMBRE', 'RAGENCIA', 'ROPERADOR', 'RCANTPAX', 'RCANTPAXPREV',
                   'RESTADODELARESERVA', 'RCOMENTARIO', 'RRECOGIDA', 'RALOJAMIENTO',
                   'RTIPODEPESCA', 'RIN', 'ROUT', 'RDESTINO', 'RCPAXDESTINO',
